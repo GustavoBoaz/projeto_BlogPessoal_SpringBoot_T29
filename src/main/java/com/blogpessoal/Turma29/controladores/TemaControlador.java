@@ -23,11 +23,11 @@ import com.blogpessoal.Turma29.repositorios.TemaRepositorio;
 @RestController
 @RequestMapping("/api/v1/tema")
 public class TemaControlador {
-	
+
 	private @Autowired TemaRepositorio repositorio;
-	
+
 	@GetMapping("/todos")
-	public ResponseEntity<List<Tema>> pegarTodos(){
+	public ResponseEntity<List<Tema>> pegarTodos() {
 		List<Tema> objetoLista = repositorio.findAll();
 
 		if (objetoLista.isEmpty()) {
@@ -36,50 +36,50 @@ public class TemaControlador {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-	
+
 	@PostMapping("/salvar")
 	public ResponseEntity<Tema> salvar(@Valid @RequestBody Tema novoTema) {
 		return ResponseEntity.status(201).body(repositorio.save(novoTema));
 	}
-	
+
 	@GetMapping("/{id_tema}")
-	public ResponseEntity<Tema> buscarPorId(@PathVariable(value = "id_tema") Long idTema){
+	public ResponseEntity<Tema> buscarPorId(@PathVariable(value = "id_tema") Long idTema) {
 		Optional<Tema> objetoTema = repositorio.findById(idTema);
-		
+
 		if (objetoTema.isPresent()) {
 			return ResponseEntity.status(200).body(objetoTema.get());
 		} else {
 			return ResponseEntity.status(204).build();
 		}
 	}
-	
+
 	@GetMapping("/tema/{tema}")
-	public ResponseEntity<List<Tema>> buscarPorTemaI(@PathVariable(value = "tema") String tema){
+	public ResponseEntity<List<Tema>> buscarPorTemaI(@PathVariable(value = "tema") String tema) {
 		List<Tema> objetoLista = repositorio.findAllByTemaContainingIgnoreCase(tema);
-		
+
 		if (objetoLista.isEmpty()) {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-	
+
 	@GetMapping("/pesquisa")
-	public ResponseEntity<List<Tema>> buscarPorTemaII(@RequestParam(defaultValue = "") String tema){
+	public ResponseEntity<List<Tema>> buscarPorTemaII(@RequestParam(defaultValue = "") String tema) {
 		List<Tema> objetoLista = repositorio.findAllByTemaContainingIgnoreCase(tema);
-		
+
 		if (objetoLista.isEmpty()) {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-	
+
 	@PutMapping("/atualizar")
 	public ResponseEntity<Tema> atualizar(@Valid @RequestBody Tema temaParaAtualizar) {
 		return ResponseEntity.status(201).body(repositorio.save(temaParaAtualizar));
 	}
-	
+
 	@DeleteMapping("/deletar/{id_tema}")
 	public void deletarTemaPorId(@PathVariable(value = "id_tema") Long idTema) {
 		repositorio.deleteById(idTema);
