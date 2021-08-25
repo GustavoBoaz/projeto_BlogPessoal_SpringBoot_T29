@@ -81,7 +81,7 @@ public class PostagemControlador {
 	}
 
 	@DeleteMapping("/deletar/{id_postagem}")
-	public void deletarTituloPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
+	public void deletarPostagemPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
 		repositorio.deleteById(idPostagem);
 	}
 
