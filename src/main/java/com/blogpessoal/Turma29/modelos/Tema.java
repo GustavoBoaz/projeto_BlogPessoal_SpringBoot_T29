@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Classe utilizada como Entidade no Banco de dados para Tema, a mesma possui
  * atributos que seram colunas no banco com titulo : tema
@@ -25,6 +27,7 @@ public class Tema {
 	private @NotBlank String tema;
 
 	@OneToMany(mappedBy = "temaRelacionado", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"temaRelacionado"})
 	private List<Postagem> postagens = new ArrayList<>();
 
 	public Long getIdTema() {
