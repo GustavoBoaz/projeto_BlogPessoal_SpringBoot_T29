@@ -34,4 +34,8 @@ public class UsuarioServicos {
 			return Optional.ofNullable(repositorio.save(novoUsuario));
 		});
 	}
+	
+	public Optional<?> pegarCredenciais(){
+		return null;
+	}
 }
