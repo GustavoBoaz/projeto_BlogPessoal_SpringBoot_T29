@@ -3,7 +3,7 @@ package com.blogpessoal.Turma29.excecoes.modelos.Usuario;
 public class ExcecaoEmailExistente extends RuntimeException {
 	
 	/**
-	 * Classe reponsavel por construtor de excecao caso email seja existente no
+	 * Classe responsavel por construtor de excecao caso email seja existente no
 	 * cadastro de um novo usuario
 	 * 
 	 * @since 1.0
