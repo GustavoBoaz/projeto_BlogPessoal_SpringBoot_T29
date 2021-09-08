@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blogpessoal.Turma29.modelos.Tema;
 import com.blogpessoal.Turma29.repositorios.TemaRepositorio;
+import com.blogpessoal.Turma29.servicos.TemaServicos;
 
 @RestController
 @RequestMapping("/api/v1/tema")
 public class TemaControlador {
 
 	private @Autowired TemaRepositorio repositorio;
+	private @Autowired TemaServicos servicos;
 
 	@GetMapping("/todos")
 	public ResponseEntity<List<Tema>> pegarTodos() {
@@ -76,8 +78,14 @@ public class TemaControlador {
 	}
 
 	@PutMapping("/atualizar")
-	public ResponseEntity<Tema> atualizar(@Valid @RequestBody Tema temaParaAtualizar) {
-		return ResponseEntity.status(201).body(repositorio.save(temaParaAtualizar));
+	public ResponseEntity<Object> alterar(@Valid @RequestBody Tema temaParaAlterar) {
+		Optional<Tema> objetoAlterado = servicos.alterarTema(temaParaAlterar);
+
+		if (objetoAlterado.isPresent()) {
+			return ResponseEntity.status(201).body(objetoAlterado.get());
+		} else {
+			return null;
+		}
 	}
 
 	@DeleteMapping("/deletar/{id_tema}")
