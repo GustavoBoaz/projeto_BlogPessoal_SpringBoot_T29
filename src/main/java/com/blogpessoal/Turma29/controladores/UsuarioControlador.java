@@ -17,13 +17,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogpessoal.Turma29.excecoes.modelos.Usuario.ExcecaoEmailExistente;
 import com.blogpessoal.Turma29.modelos.Usuario;
 import com.blogpessoal.Turma29.modelos.utilidades.UsuarioDTO;
 import com.blogpessoal.Turma29.repositorios.UsuarioRepositorio;
 import com.blogpessoal.Turma29.servicos.UsuarioServicos;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+
 @RestController
 @RequestMapping("/api/v1/usuario")
+@Api (tags = "Controlador de Usuario", description = "Utilitario de Usuarios")
 public class UsuarioControlador {
 
 	private @Autowired UsuarioRepositorio repositorio;
@@ -40,15 +48,20 @@ public class UsuarioControlador {
 		}
 
 	}
-
+	
+	@ApiOperation(value = "Salva novo usuario no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna usuario cadastrado"),
+			@ApiResponse(code = 400, message = "Erro na requisição")
+	})
 	@PostMapping("/salvar")
 	public ResponseEntity<Object> salvar(@Valid @RequestBody Usuario novoUsuario) {
 		Optional<Object> objetoOptional = servicos.cadastrarUsuario(novoUsuario);
 		
-		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+		if (objetoOptional.isPresent()) {
+			return ResponseEntity.status(400).body(objetoOptional.get());
 		} else {
-			return ResponseEntity.status(201).body(objetoOptional.get());
+			throw new ExcecaoEmailExistente(novoUsuario.getEmail());
 		}
 	}
 	
