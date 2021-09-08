@@ -73,4 +73,26 @@ public class UsuarioServicos {
 			return Optional.empty(); // Email não existente
 		});
 	}
+	/**
+	 * Metodo utilizado para alterar um usuario fornecido pelo FRONT, O mesmo
+	 * retorna um Optional com entidade Usuario dentro e senha criptografada. Caso
+	 * falho retorna um Optional.empty()
+	 * 
+	 * @param usuarioParaAlterar do tipo Usuario
+	 * @return Optional com Usuario Alterado
+	 * @since 1.0
+	 * @author Turma 28
+	 */
+	public Optional<?> alterarUsuario(UsuarioDTO usuarioParaAlterar) {
+		return repositorio.findById(usuarioParaAlterar.getId()).map(usuarioExistente -> {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			String senhaCriptografada = encoder.encode(usuarioParaAlterar.getSenha());
+
+			usuarioExistente.setNome(usuarioParaAlterar.getNome());
+			usuarioExistente.setSenha(senhaCriptografada);
+			return Optional.ofNullable(repositorio.save(usuarioExistente));
+		}).orElseGet(() -> {
+			return Optional.empty();
+		});
+	}
 }

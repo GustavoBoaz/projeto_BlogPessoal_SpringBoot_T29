@@ -100,9 +100,20 @@ public class UsuarioControlador {
 	public ResponseEntity<Usuario> atualizar(@Valid @RequestBody Usuario usuarioParaAtualizar) {
 		return ResponseEntity.status(201).body(repositorio.save(usuarioParaAtualizar));
 	}
+	@PutMapping("/alterar")
+	public ResponseEntity<Object> alterar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
+		Optional<?> objetoAlterado = servicos.alterarUsuario(usuarioParaAlterar);
+
+		if (objetoAlterado.isPresent()) {
+			return ResponseEntity.status(201).body(objetoAlterado.get());
+		} else {
+			return ResponseEntity.status(400).build();
+		}
+	}
 	
 	@DeleteMapping("/deletar/{id_usuario}")
 	public void deletarUsuarioPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
 		repositorio.deleteById(idUsuario);
 	}
+
 }
