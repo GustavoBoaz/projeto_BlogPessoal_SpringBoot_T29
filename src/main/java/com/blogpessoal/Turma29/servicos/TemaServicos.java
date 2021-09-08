@@ -3,10 +3,12 @@ package com.blogpessoal.Turma29.servicos;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.blogpessoal.Turma29.modelos.Tema;
 import com.blogpessoal.Turma29.repositorios.TemaRepositorio;
 
+@Service
 public class TemaServicos {
 	
 	@Autowired

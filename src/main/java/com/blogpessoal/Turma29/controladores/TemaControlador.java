@@ -25,8 +25,10 @@ import com.blogpessoal.Turma29.servicos.TemaServicos;
 @RequestMapping("/api/v1/tema")
 public class TemaControlador {
 
-	private @Autowired TemaRepositorio repositorio;
-	private @Autowired TemaServicos servicos;
+	@Autowired 
+	private TemaRepositorio repositorio;
+	@Autowired
+	private TemaServicos servicos;
 
 	@GetMapping("/todos")
 	public ResponseEntity<List<Tema>> pegarTodos() {
@@ -84,7 +86,7 @@ public class TemaControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return null;
+			return ResponseEntity.status(400).build();
 		}
 	}
 
