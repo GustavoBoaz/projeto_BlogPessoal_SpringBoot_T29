@@ -33,6 +33,13 @@ public class Usuario {
 	@OneToMany(mappedBy = "criador", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({"criador"})
 	private List<Postagem> minhasPostagens = new ArrayList<>();
+	
+	public Usuario(@NotBlank String nome, @NotBlank @Email String email, @NotBlank @Size(min = 5) String senha) {
+		super();
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
 
 	public Long getIdUsuario() {
 		return idUsuario;
