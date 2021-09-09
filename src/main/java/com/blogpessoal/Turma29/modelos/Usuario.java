@@ -40,6 +40,17 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 	}
+	
+	public Usuario(Long idUsuario,String nome,String email,String senha) {
+		this.idUsuario = idUsuario;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
+
+	public Usuario() {
+
+	}
 
 	public Long getIdUsuario() {
 		return idUsuario;
