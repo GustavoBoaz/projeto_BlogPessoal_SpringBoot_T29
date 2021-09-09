@@ -81,7 +81,7 @@ public class UsuarioServicos {
 	 * @param usuarioParaAlterar do tipo Usuario
 	 * @return Optional com Usuario Alterado
 	 * @since 1.0
-	 * @author Turma 28
+	 * @author Turma 29
 	 */
 	public Optional<?> alterarUsuario(UsuarioDTO usuarioParaAlterar) {
 		return repositorio.findById(usuarioParaAlterar.getId()).map(usuarioExistente -> {
