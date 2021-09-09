@@ -44,65 +44,71 @@ public class UsuarioControlador {
 	@PostMapping("/salvar")
 	public ResponseEntity<Object> salvar(@Valid @RequestBody Usuario novoUsuario) {
 		Optional<Object> objetoOptional = servicos.cadastrarUsuario(novoUsuario);
-		
+
 		if (objetoOptional.isEmpty()) {
 			return ResponseEntity.status(400).build();
 		} else {
 			return ResponseEntity.status(201).body(objetoOptional.get());
 		}
 	}
-	
+
 	@PutMapping("/credenciais")
-	public ResponseEntity<Object> credenciais(@Valid @RequestBody UsuarioDTO usuarioParaAutenticar){
+	public ResponseEntity<Object> credenciais(@Valid @RequestBody UsuarioDTO usuarioParaAutenticar) {
 		Optional<?> objetoOptional = servicos.pegarCredenciais(usuarioParaAutenticar);
-		
+
 		if (objetoOptional.isEmpty()) {
 			return ResponseEntity.status(400).build();
 		} else {
 			return ResponseEntity.status(201).body(objetoOptional.get());
 		}
 	}
-	
+
 	@GetMapping("/{id_usuario}")
-	public ResponseEntity<Usuario> buscarPorId(@PathVariable(value = "id_usuario") Long idUsuario){
+	public ResponseEntity<Usuario> buscarPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoUsuario = repositorio.findById(idUsuario);
-		
+
 		if (objetoUsuario.isPresent()) {
 			return ResponseEntity.status(200).body(objetoUsuario.get());
 		} else {
 			return ResponseEntity.status(204).build();
 		}
 	}
-	
+
 	@GetMapping("/nome/{nome_usuario}")
-	public ResponseEntity<List<Usuario>> buscarPorNomeI(@PathVariable(value = "nome_usuario") String nome){
+	public ResponseEntity<List<Usuario>> buscarPorNomeI(@PathVariable(value = "nome_usuario") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
-		
+
 		if (objetoLista.isEmpty()) {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-	
+
 	@GetMapping("/pesquisa")
-	public ResponseEntity<List<Usuario>> buscarPorNomeII(@RequestParam(defaultValue = "") String nome){
+	public ResponseEntity<List<Usuario>> buscarPorNomeII(@RequestParam(defaultValue = "") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
-		
+
 		if (objetoLista.isEmpty()) {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-	
+
 	@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> atualizar(@Valid @RequestBody Usuario usuarioParaAtualizar) {
 		return ResponseEntity.status(201).body(repositorio.save(usuarioParaAtualizar));
 	}
-	
+
 	@DeleteMapping("/deletar/{id_usuario}")
-	public void deletarUsuarioPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
-		repositorio.deleteById(idUsuario);
+	public ResponseEntity<Object> deletarUsuarioPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
+		Optional<Usuario> objetoOptional = repositorio.findById(idUsuario);
+		if (objetoOptional.isEmpty()) {
+			return ResponseEntity.status(400).build();
+		} else {
+			repositorio.deleteById(idUsuario);
+			return ResponseEntity.status(200).build();
+		}
 	}
 }
