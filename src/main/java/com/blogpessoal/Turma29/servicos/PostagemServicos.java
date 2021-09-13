@@ -18,6 +18,25 @@ public class PostagemServicos {
 	private @Autowired UsuarioRepositorio repositorioU;
 	private @Autowired TemaRepositorio repositorioT;
 
+	/*
+	 * Método utilizado para alterar uma postagem que retorna um Optional com Postagem
+	 * caso corretoou um Optional.empty() caso id da Postagem não exista.
+	 * 
+	 * @param postagemParaAlterar do tipo Postagem
+	 * @return Optional com Postagem alterada
+	 * @since 1.0
+	 * @author Turma 29
+	 */
+		public Optional<Postagem> atualizarPostagem(Postagem postagemParaAlterar){
+			return repositorio.findById(postagemParaAlterar.getIdPostagem()).map(postagemExistente->{
+				postagemExistente.setTitulo(postagemParaAlterar.getTitulo());
+				postagemExistente.setDescricao(postagemParaAlterar.getDescricao());
+				return Optional.ofNullable(repositorio.save(postagemExistente));
+			}).orElseGet(() ->{
+				return Optional.empty();
+			});
+		}
+
 	/**
 	 * Método usado no cadastro de uma nova postagem dentro do banco, validando se o
 	 * usuario criador é existente. O id do usuario criador e o id do tema devem ser
@@ -30,7 +49,6 @@ public class PostagemServicos {
 	 * @since 1.5
 	 * @author Turma 29
 	 */
-
 	public Optional<?> cadastrarPostagem(Postagem novaPostagem) {
 		Optional<Tema> objetoExistente = repositorioT.findById(novaPostagem.getTemaRelacionado().getIdTema());
 		return repositorioU.findById(novaPostagem.getCriador().getIdUsuario()).map(usuarioExistente -> {
@@ -40,11 +58,10 @@ public class PostagemServicos {
 				return Optional.ofNullable(repositorioP.save(novaPostagem));
 			} else {
 				return Optional.empty();
-
 			}
 		}).orElseGet(() -> {
 			return Optional.empty();
-
 		});
 	}
+
 }

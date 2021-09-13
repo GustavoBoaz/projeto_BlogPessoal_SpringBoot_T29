@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blogpessoal.Turma29.modelos.Postagem;
 import com.blogpessoal.Turma29.repositorios.PostagemRepositorio;
+import com.blogpessoal.Turma29.servicos.PostagemServicos;
 
 @RestController
 @RequestMapping("/api/v1/postagem")
 public class PostagemControlador {
 
 	private @Autowired PostagemRepositorio repositorio;
-
+	private @Autowired PostagemServicos servicos;
+	
 	@GetMapping("/todas")
 	public ResponseEntity<List<Postagem>> pegarTodos() {
 		List<Postagem> objetoLista = repositorio.findAll();
@@ -76,9 +78,17 @@ public class PostagemControlador {
 	}
 
 	@PutMapping("/atualizar")
-	public ResponseEntity<Postagem> atualizar(@Valid @RequestBody Postagem postagemParaAtualizar) {
-		return ResponseEntity.status(201).body(repositorio.save(postagemParaAtualizar));
+	 
+	public ResponseEntity<Postagem> atualizar (@Valid @RequestBody Postagem postagemParaAtualizar){
+		Optional <Postagem> objetoAlterado = servicos.atualizarPostagem(postagemParaAtualizar);
+		
+		if(objetoAlterado.isPresent()) {
+			return ResponseEntity.status(201).body(objetoAlterado.get());
+		}else {
+			return ResponseEntity.status(204).build();
+		}
 	}
+	 
 
 	@DeleteMapping("/deletar/{id_postagem}")
 	public void deletarPostagemPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
