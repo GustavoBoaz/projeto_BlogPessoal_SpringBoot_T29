@@ -29,9 +29,9 @@ public class PostagemServicos {
 	 * @author Turma 29
 	 */
 	public Optional<?> atualizarPostagem(Postagem postagemParaAlterar) {
-		Optional<Usuario> optionalUsuario = repositorioU.findById(postagemParaAlterar.getCriador().getIdUsuario());
-		Optional<Tema> optionalTema = repositorioT.findById(postagemParaAlterar.getTemaRelacionado().getIdTema());
 		return repositorioP.findById(postagemParaAlterar.getIdPostagem()).map(postagemExistente -> {
+			Optional<Usuario> optionalUsuario = repositorioU.findById(postagemParaAlterar.getCriador().getIdUsuario());
+			Optional<Tema> optionalTema = repositorioT.findById(postagemParaAlterar.getTemaRelacionado().getIdTema());
 			if (optionalUsuario.isPresent() && optionalTema.isPresent()) {
 				postagemExistente.setTitulo(postagemParaAlterar.getTitulo());
 				postagemExistente.setDescricao(postagemParaAlterar.getDescricao());
