@@ -84,7 +84,7 @@ public class PostagemControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(204).build();
+			return ResponseEntity.status(400).build();
 		}
 	}
 
