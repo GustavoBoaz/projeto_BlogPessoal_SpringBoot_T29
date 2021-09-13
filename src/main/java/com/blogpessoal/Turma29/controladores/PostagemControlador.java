@@ -78,8 +78,8 @@ public class PostagemControlador {
 	}
 
 	@PutMapping("/atualizar")
-	public ResponseEntity<Postagem> atualizar(@Valid @RequestBody Postagem postagemParaAtualizar) {
-		Optional<Postagem> objetoAlterado = servicos.atualizarPostagem(postagemParaAtualizar);
+	public ResponseEntity<Object> atualizar(@Valid @RequestBody Postagem postagemParaAtualizar) {
+		Optional<?> objetoAlterado = servicos.atualizarPostagem(postagemParaAtualizar);
 
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
