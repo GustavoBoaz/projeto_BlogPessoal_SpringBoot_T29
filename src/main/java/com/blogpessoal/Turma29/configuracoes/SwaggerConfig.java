@@ -59,7 +59,7 @@ public class SwaggerConfig {
 	 * @return Contact com dados
 	 */
 	private static Contact contact() {
-		return new Contact("Gustavo Boaz", "https://github.com/GustavoBoaz/project_BlogPessoalTurma28",
+		return new Contact("Gustavo Boaz", "https://github.com/GustavoBoaz/project_BlogPessoalTurma29",
 				"gustavoboaz@gmail.com");
 	}
 
