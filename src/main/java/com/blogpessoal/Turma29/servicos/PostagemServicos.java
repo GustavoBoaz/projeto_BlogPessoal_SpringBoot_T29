@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.blogpessoal.Turma29.modelos.Postagem;
 import com.blogpessoal.Turma29.modelos.Tema;
+import com.blogpessoal.Turma29.modelos.Usuario;
 import com.blogpessoal.Turma29.repositorios.PostagemRepositorio;
 import com.blogpessoal.Turma29.repositorios.TemaRepositorio;
 import com.blogpessoal.Turma29.repositorios.UsuarioRepositorio;
@@ -24,14 +25,20 @@ public class PostagemServicos {
 	 * 
 	 * @param postagemParaAlterar do tipo Postagem
 	 * @return Optional com Postagem alterada
-	 * @since 1.5
+	 * @since 2.0
 	 * @author Turma 29
 	 */
-	public Optional<Postagem> atualizarPostagem(Postagem postagemParaAlterar) {
+	public Optional<?> atualizarPostagem(Postagem postagemParaAlterar) {
+		Optional<Usuario> optionalUsuario = repositorioU.findById(postagemParaAlterar.getCriador().getIdUsuario());
+		Optional<Tema> optionalTema = repositorioT.findById(postagemParaAlterar.getTemaRelacionado().getIdTema());
 		return repositorioP.findById(postagemParaAlterar.getIdPostagem()).map(postagemExistente -> {
-			postagemExistente.setTitulo(postagemParaAlterar.getTitulo());
-			postagemExistente.setDescricao(postagemParaAlterar.getDescricao());
-			return Optional.ofNullable(repositorioP.save(postagemExistente));
+			if (optionalUsuario.isPresent() && optionalTema.isPresent()) {
+				postagemExistente.setTitulo(postagemParaAlterar.getTitulo());
+				postagemExistente.setDescricao(postagemParaAlterar.getDescricao());
+				return Optional.ofNullable(repositorioP.save(postagemExistente));
+			} else {
+				return Optional.empty();
+			}
 		}).orElseGet(() -> {
 			return Optional.empty();
 		});
