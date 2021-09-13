@@ -38,7 +38,6 @@ public class UsuarioControlador {
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
-
 	}
 
 	@PostMapping("/salvar")
