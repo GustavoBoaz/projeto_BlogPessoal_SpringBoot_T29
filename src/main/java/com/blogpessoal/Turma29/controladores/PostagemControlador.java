@@ -27,7 +27,7 @@ public class PostagemControlador {
 
 	private @Autowired PostagemRepositorio repositorio;
 	private @Autowired PostagemServicos servicos;
-	
+
 	@GetMapping("/todas")
 	public ResponseEntity<List<Postagem>> pegarTodos() {
 		List<Postagem> objetoLista = repositorio.findAll();
@@ -78,21 +78,26 @@ public class PostagemControlador {
 	}
 
 	@PutMapping("/atualizar")
-	 
-	public ResponseEntity<Postagem> atualizar (@Valid @RequestBody Postagem postagemParaAtualizar){
-		Optional <Postagem> objetoAlterado = servicos.atualizarPostagem(postagemParaAtualizar);
-		
-		if(objetoAlterado.isPresent()) {
+
+	public ResponseEntity<Postagem> atualizar(@Valid @RequestBody Postagem postagemParaAtualizar) {
+		Optional<Postagem> objetoAlterado = servicos.atualizarPostagem(postagemParaAtualizar);
+
+		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
-		}else {
+		} else {
 			return ResponseEntity.status(204).build();
 		}
 	}
-	 
 
 	@DeleteMapping("/deletar/{id_postagem}")
-	public void deletarPostagemPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
-		repositorio.deleteById(idPostagem);
+	public ResponseEntity<Object> deletarPostagemPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
+		Optional<Postagem> objetoOptional = repositorio.findById(idPostagem);
+		if (objetoOptional.isEmpty()) {
+			return ResponseEntity.status(400).build();
+		} else {
+			repositorio.deleteById(idPostagem);
+			return ResponseEntity.status(200).build();
+		}
 	}
 
 }
