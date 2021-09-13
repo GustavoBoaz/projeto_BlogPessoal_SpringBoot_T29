@@ -89,8 +89,14 @@ public class TemaControlador {
 	}
 
 	@DeleteMapping("/deletar/{id_tema}")
-	public void deletarTemaPorId(@PathVariable(value = "id_tema") Long idTema) {
-		repositorio.deleteById(idTema);
+	public ResponseEntity<Object> deletarTemaPorId(@PathVariable(value = "id_tema") Long idTema) {
+		Optional<Tema> objetoOptional = repositorio.findById(idTema);
+		if (objetoOptional.isEmpty()) {
+			return ResponseEntity.status(400).build();
+		} else {
+			repositorio.deleteById(idTema);
+			return ResponseEntity.status(200).build();
+		}
 	}
 
 }
