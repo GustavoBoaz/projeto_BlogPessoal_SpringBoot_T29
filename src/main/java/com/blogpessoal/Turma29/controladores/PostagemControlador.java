@@ -83,7 +83,7 @@ public class PostagemControlador {
 			@ApiResponse(code = 200, message = "Retorna postagems existente ou inexistente"),
 			@ApiResponse(code = 204, message = "Retorno inexistente")
 	})
-	@GetMapping("/{titulo}")
+	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Postagem>> buscarPorTituloI(@PathVariable(value = "titulo") String titulo) {
 		List<Postagem> objetoLista = repositorio.findAllByTituloContainingIgnoreCase(titulo);
 

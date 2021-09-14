@@ -82,7 +82,7 @@ public class TemaControlador {
 			@ApiResponse(code = 200, message = "Retorna tema existente ou inexistente"),
 			@ApiResponse(code = 204, message = "Retorno inexistente")
 	})
-	@GetMapping("/{tema}")
+	@GetMapping("/tema/{tema}")
 	public ResponseEntity<List<Tema>> buscarPorTemaI(@PathVariable(value = "tema") String tema) {
 		List<Tema> objetoLista = repositorio.findAllByTemaContainingIgnoreCase(tema);
 
