@@ -94,11 +94,6 @@ public class UsuarioControlador {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
 	}
-
-	@PutMapping("/atualizar")
-	public ResponseEntity<Usuario> atualizar(@Valid @RequestBody Usuario usuarioParaAtualizar) {
-		return ResponseEntity.status(201).body(repositorio.save(usuarioParaAtualizar));
-	}
   
 	@PutMapping("/alterar")
 	public ResponseEntity<Object> alterar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
