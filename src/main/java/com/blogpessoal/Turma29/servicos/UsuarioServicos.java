@@ -86,10 +86,10 @@ public class UsuarioServicos {
 	public Optional<?> alterarUsuario(UsuarioDTO usuarioParaAlterar) {
 		return repositorio.findById(usuarioParaAlterar.getId()).map(usuarioExistente -> {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			String senhaCriptografada = encoder.encode(usuarioParaAlterar.getSenha());
+			String result = encoder.encode(usuarioParaAlterar.getSenha());
 
 			usuarioExistente.setNome(usuarioParaAlterar.getNome());
-			usuarioExistente.setSenha(senhaCriptografada);
+			usuarioExistente.setSenha(result);
 			return Optional.ofNullable(repositorio.save(usuarioExistente));
 		}).orElseGet(() -> {
 			return Optional.empty();
