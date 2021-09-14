@@ -75,7 +75,7 @@ public class UsuarioControlador {
 		}
 	}
 
-	@GetMapping("/nome/{nome_usuario}")
+	@GetMapping("/{nome_usuario}")
 	public ResponseEntity<List<Usuario>> buscarPorNomeI(@PathVariable(value = "nome_usuario") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
 
@@ -97,8 +97,8 @@ public class UsuarioControlador {
 		}
 	}
   
-	@PutMapping("/alterar")
-	public ResponseEntity<Object> alterar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
+	@PutMapping("/atualizar")
+	public ResponseEntity<Object> atualizar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
 		Optional<?> objetoAlterado = servicos.alterarUsuario(usuarioParaAlterar);
 
 		if (objetoAlterado.isPresent()) {

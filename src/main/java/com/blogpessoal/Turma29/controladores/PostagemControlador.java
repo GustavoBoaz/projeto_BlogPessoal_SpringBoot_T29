@@ -31,7 +31,7 @@ public class PostagemControlador {
 	private @Autowired PostagemServicos servicos;
 
 	@GetMapping("/todas")
-	public ResponseEntity<List<Postagem>> pegarTodos() {
+	public ResponseEntity<List<Postagem>> pegarTodas() {
 		List<Postagem> objetoLista = repositorio.findAll();
 
 		if (objetoLista.isEmpty()) {
@@ -57,7 +57,7 @@ public class PostagemControlador {
 		}
 	}
 
-	@GetMapping("/titulo/{titulo}")
+	@GetMapping("/{titulo}")
 	public ResponseEntity<List<Postagem>> buscarPorTituloI(@PathVariable(value = "titulo") String titulo) {
 		List<Postagem> objetoLista = repositorio.findAllByTituloContainingIgnoreCase(titulo);
 

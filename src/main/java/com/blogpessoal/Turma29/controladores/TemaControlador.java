@@ -46,7 +46,7 @@ public class TemaControlador {
 		return ResponseEntity.status(201).body(repositorio.save(novoTema));
 	}
 
-	@GetMapping("/id/{id_tema}")
+	@GetMapping("/{id_tema}")
 	public ResponseEntity<Tema> buscarPorId(@PathVariable(value = "id_tema") Long idTema) {
 		Optional<Tema> objetoTema = repositorio.findById(idTema);
 
