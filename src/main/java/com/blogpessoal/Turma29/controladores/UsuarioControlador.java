@@ -23,14 +23,25 @@ import com.blogpessoal.Turma29.modelos.utilidades.UsuarioDTO;
 import com.blogpessoal.Turma29.repositorios.UsuarioRepositorio;
 import com.blogpessoal.Turma29.servicos.UsuarioServicos;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/api/v1/usuario")
+@Api(tags = "Controlador de Usuario", description = "Utilitario de Usuarios")
 @CrossOrigin("*")
 public class UsuarioControlador {
 
 	private @Autowired UsuarioRepositorio repositorio;
 	private @Autowired UsuarioServicos servicos;
 
+	@ApiOperation(value = "Busca lista de usuarios no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna lista de usuarios"),
+			@ApiResponse(code = 204, message = "Retorno sem usuarios")
+	})
 	@GetMapping("/todes")
 	public ResponseEntity<List<Usuario>> pegarTodes() {
 		List<Usuario> objetoLista = repositorio.findAll();
@@ -42,6 +53,11 @@ public class UsuarioControlador {
 		}
 	}
 
+	@ApiOperation(value = "Salva novo usuario no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna usuario cadastrado"),
+			@ApiResponse(code = 400, message = "Erro na requisição")
+	})
 	@PostMapping("/salvar")
 	public ResponseEntity<Object> salvar(@Valid @RequestBody Usuario novoUsuario) {
 		Optional<Object> objetoOptional = servicos.cadastrarUsuario(novoUsuario);
@@ -53,6 +69,11 @@ public class UsuarioControlador {
 		}
 	}
 
+	@ApiOperation(value = "Autentica usuario no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna credenciais de usuario"),
+			@ApiResponse(code = 400, message = "Erro na requisição ou usuario não credenciado")
+	})
 	@PutMapping("/credenciais")
 	public ResponseEntity<Object> credenciais(@Valid @RequestBody UsuarioDTO usuarioParaAutenticar) {
 		Optional<?> objetoOptional = servicos.pegarCredenciais(usuarioParaAutenticar);
@@ -64,6 +85,11 @@ public class UsuarioControlador {
 		}
 	}
 
+	@ApiOperation(value = "Busca usuario por Id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna usuario existente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/{id_usuario}")
 	public ResponseEntity<Usuario> buscarPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoUsuario = repositorio.findById(idUsuario);
@@ -75,6 +101,11 @@ public class UsuarioControlador {
 		}
 	}
 
+	@ApiOperation(value = "Busca usuario por nome")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna usuario existente ou inexistente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/{nome_usuario}")
 	public ResponseEntity<List<Usuario>> buscarPorNomeI(@PathVariable(value = "nome_usuario") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
@@ -86,6 +117,11 @@ public class UsuarioControlador {
 		}
 	}
 
+	@ApiOperation(value = "Busca usuario por nome")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna usuario existente ou inexistente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/pesquisa")
 	public ResponseEntity<List<Usuario>> buscarPorNomeII(@RequestParam(defaultValue = "") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
@@ -97,6 +133,11 @@ public class UsuarioControlador {
 		}
 	}
   
+	@ApiOperation(value = "Atualizar usuario existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna usuario atualizado"),
+			@ApiResponse(code = 400, message = "Id de usuario invalido")
+	})
 	@PutMapping("/atualizar")
 	public ResponseEntity<Object> atualizar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
 		Optional<?> objetoAlterado = servicos.alterarUsuario(usuarioParaAlterar);
@@ -108,6 +149,11 @@ public class UsuarioControlador {
 		}
 	}
 	
+	@ApiOperation(value = "Deletar usuario existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Caso deletado!"),
+			@ApiResponse(code = 400, message = "Id de usuario invalido")
+	})
 	@DeleteMapping("/deletar/{id_usuario}")
 	public ResponseEntity<Object> deletarUsuarioPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoOptional = repositorio.findById(idUsuario);
