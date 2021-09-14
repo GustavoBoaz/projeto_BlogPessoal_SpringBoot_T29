@@ -106,7 +106,7 @@ public class UsuarioControlador {
 			@ApiResponse(code = 200, message = "Retorna usuario existente ou inexistente"),
 			@ApiResponse(code = 204, message = "Retorno inexistente")
 	})
-	@GetMapping("/{nome_usuario}")
+	@GetMapping("/nome/{nome_usuario}")
 	public ResponseEntity<List<Usuario>> buscarPorNomeI(@PathVariable(value = "nome_usuario") String nome) {
 		List<Usuario> objetoLista = repositorio.findAllByNomeContainingIgnoreCase(nome);
 
