@@ -1,5 +1,7 @@
 package com.blogpessoal.Turma29.modelos;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -23,6 +26,8 @@ public class Postagem {
 	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idPostagem;
 	private @NotBlank String titulo;
 	private @NotBlank String descricao;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataPostagem = LocalDate.now();
 
 	@ManyToOne
 	@JoinColumn(name = "criador_id")
@@ -74,4 +79,11 @@ public class Postagem {
 		this.temaRelacionado = temaRelacionado;
 	}
 
+	public LocalDate getDataPostagem() {
+		return dataPostagem;
+	}
+
+	public void setDataPostagem(LocalDate dataPostagem) {
+		this.dataPostagem = dataPostagem;
+	}
 }
