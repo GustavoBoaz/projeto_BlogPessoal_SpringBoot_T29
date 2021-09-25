@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.blogpessoal.Turma29.modelos.Tema;
 import com.blogpessoal.Turma29.repositorios.TemaRepositorio;
@@ -121,20 +123,20 @@ public class TemaControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de tema invalido!", null);
 		}
 	}
 
 	@ApiOperation(value = "Deletar tema existente")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Caso deletado!"),
-			@ApiResponse(code = 400, message = "Id de usuario invalido")
+			@ApiResponse(code = 400, message = "Id de tema invalido")
 	})
 	@DeleteMapping("/deletar/{id_tema}")
 	public ResponseEntity<Object> deletarTemaPorId(@PathVariable(value = "id_tema") Long idTema) {
 		Optional<Tema> objetoOptional = repositorio.findById(idTema);
 		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de tema invalido!", null);
 		} else {
 			repositorio.deleteById(idTema);
 			return ResponseEntity.status(200).build();

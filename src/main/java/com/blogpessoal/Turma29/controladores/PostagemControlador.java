@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.blogpessoal.Turma29.modelos.Postagem;
 import com.blogpessoal.Turma29.repositorios.PostagemRepositorio;
@@ -122,7 +124,7 @@ public class PostagemControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de postagem invalido!", null);
 		}
 	}
 
@@ -135,7 +137,7 @@ public class PostagemControlador {
 	public ResponseEntity<Object> deletarPostagemPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
 		Optional<Postagem> objetoOptional = repositorio.findById(idPostagem);
 		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de postagem invalido!", null);
 		} else {
 			repositorio.deleteById(idPostagem);
 			return ResponseEntity.status(200).build();

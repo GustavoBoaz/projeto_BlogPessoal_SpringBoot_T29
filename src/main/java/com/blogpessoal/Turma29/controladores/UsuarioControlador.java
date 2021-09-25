@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.blogpessoal.Turma29.modelos.Usuario;
 import com.blogpessoal.Turma29.modelos.utilidades.UsuarioDTO;
@@ -63,7 +65,7 @@ public class UsuarioControlador {
 		Optional<Object> objetoOptional = servicos.cadastrarUsuario(novoUsuario);
 
 		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário existente!", null);
 		} else {
 			return ResponseEntity.status(201).body(objetoOptional.get());
 		}
@@ -79,7 +81,7 @@ public class UsuarioControlador {
 		Optional<?> objetoOptional = servicos.pegarCredenciais(usuarioParaAutenticar);
 
 		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro na requisição ou usuario não credenciado!", null);
 		} else {
 			return ResponseEntity.status(201).body(objetoOptional.get());
 		}
@@ -145,7 +147,7 @@ public class UsuarioControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de usuario invalido!", null);
 		}
 	}
 	
@@ -158,7 +160,7 @@ public class UsuarioControlador {
 	public ResponseEntity<Object> deletarUsuarioPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
 		Optional<Usuario> objetoOptional = repositorio.findById(idUsuario);
 		if (objetoOptional.isEmpty()) {
-			return ResponseEntity.status(400).build();
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id de usuario invalido!", null);
 		} else {
 			repositorio.deleteById(idUsuario);
 			return ResponseEntity.status(200).build();
