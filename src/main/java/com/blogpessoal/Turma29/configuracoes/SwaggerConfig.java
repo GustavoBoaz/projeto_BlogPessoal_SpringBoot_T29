@@ -72,7 +72,7 @@ public class SwaggerConfig {
 	public static ApiInfo metadata() {
 		return new ApiInfoBuilder().title("API - Blog Pessoal").description("Projeto API Spring - Blog Pessoal")
 				.version("1.0.0").license("Apache License Version 2.0")
-				.licenseUrl("https://github.com/GustavoBoaz/project_BlogPessoalTurma28").contact(contact()).build();
+				.licenseUrl("https://github.com/GustavoBoaz/project_BlogPessoalTurma29").contact(contact()).build();
 	}
 
 	/**
